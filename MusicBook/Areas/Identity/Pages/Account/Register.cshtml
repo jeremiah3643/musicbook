@@ -54,15 +54,12 @@
                 <input asp-for="Input.Experience" class="form-control" />
                 <span asp-validation-for="Input.Experience" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.AllInstrumentOptions"></label>
-                <input asp-for="Input.AllInstrumentOptions" class="form-control" />
-                <span asp-validation-for="Input.AllInstrumentOptions" class="text-danger"></span>
-            </div>
             <button type="submit" class="btn btn-default">Register</button>
         </form>
     </div>
 </div>
+
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

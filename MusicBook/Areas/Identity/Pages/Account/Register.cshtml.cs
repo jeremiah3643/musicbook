@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -41,8 +42,6 @@ namespace MusicBook.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            public List<int> PreselectedInstrumentIds { get; set; }
-
 
             [Required]
             [EmailAddress]
@@ -81,42 +80,7 @@ namespace MusicBook.Areas.Identity.Pages.Account
             [Display(Name = "Experience")]
             public string Experience { get; set; }
 
-            [Display(Name = "Played Instruments")]
-            public List<SelectListItem> AllInstrumentOptions
-            {
-                get
-                {
-                    if (AllInstrumentOptions == null)
-                    {
-                        return null;
-                    }
-
-                    PreselectedInstrumentIds = PlayerInstrument.Select((tp) => tp.Id).ToList();
-
-                    List<SelectListItem> allOptions = AllTrainingPrograms
-                            .Select((tp) => new SelectListItem(tp.Name, tp.Id.ToString()))
-                            .ToList();
-
-                    foreach (int Id in PreselectedTrainingProgramIds)
-                    {
-                        foreach (SelectListItem sli in allOptions)
-                        {
-                            if (sli.Value == Id.ToString())
-                            {
-                                sli.Selected = true;
-
-                            }
-                        }
-                    }
-
-                    return allOptions;
-                }
-
-
-
-
-
-            }
+        }
 
         public void OnGet(string returnUrl = null)
         {

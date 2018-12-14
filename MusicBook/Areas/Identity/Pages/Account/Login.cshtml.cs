@@ -38,7 +38,7 @@ namespace MusicBook.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
+           // [EmailAddress]
             public string Email { get; set; }
 
             [Required]
