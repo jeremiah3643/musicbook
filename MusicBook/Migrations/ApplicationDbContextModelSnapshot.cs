@@ -198,7 +198,11 @@ namespace MusicBook.Migrations
                     b.Property<string>("InstrumentName")
                         .IsRequired();
 
+                    b.Property<int?>("UserProfileId");
+
                     b.HasKey("InstrumentId");
+
+                    b.HasIndex("UserProfileId");
 
                     b.ToTable("Instruments");
                 });
@@ -255,22 +259,22 @@ namespace MusicBook.Migrations
 
             modelBuilder.Entity("MusicBook.Models.PlayerInstrument", b =>
                 {
-                    b.Property<int>("PlayerInstrumentId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ApplicationUserId");
 
                     b.Property<int>("InstrumentId");
 
                     b.Property<string>("UserId")
                         .IsRequired();
 
-                    b.HasKey("PlayerInstrumentId");
+                    b.HasKey("ApplicationUserId", "InstrumentId");
+
+                    b.HasAlternateKey("ApplicationUserId");
 
                     b.HasIndex("InstrumentId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PlayerInstruments");
+                    b.ToTable("PlayerInstrument");
                 });
 
             modelBuilder.Entity("MusicBook.Models.Post", b =>
@@ -323,6 +327,29 @@ namespace MusicBook.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Threads");
+                });
+
+            modelBuilder.Entity("MusicBook.Models.UserProfile", b =>
+                {
+                    b.Property<int>("UserProfileId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Experience");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("Location");
+
+                    b.Property<string>("applicationUserIdId");
+
+                    b.HasKey("UserProfileId");
+
+                    b.HasIndex("applicationUserIdId");
+
+                    b.ToTable("UserProfiles");
                 });
 
             modelBuilder.Entity("MusicBook.Models.ApplicationUser", b =>
@@ -391,6 +418,13 @@ namespace MusicBook.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("MusicBook.Models.Instrument", b =>
+                {
+                    b.HasOne("MusicBook.Models.UserProfile")
+                        .WithMany("PlayedInstruments")
+                        .HasForeignKey("UserProfileId");
+                });
+
             modelBuilder.Entity("MusicBook.Models.Message", b =>
                 {
                     b.HasOne("MusicBook.Models.Message", "ParentMessage")
@@ -448,6 +482,13 @@ namespace MusicBook.Migrations
                         .WithMany()
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MusicBook.Models.UserProfile", b =>
+                {
+                    b.HasOne("MusicBook.Models.ApplicationUser", "applicationUserId")
+                        .WithMany()
+                        .HasForeignKey("applicationUserIdId");
                 });
 #pragma warning restore 612, 618
         }

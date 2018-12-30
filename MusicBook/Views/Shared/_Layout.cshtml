@@ -43,6 +43,7 @@
                     <li><a asp-area="" asp-controller="Instruments" asp-action="Index">Instruments</a></li>
                     @if (SignInManager.IsSignedIn(User)){
                     <li><a asp-area="" asp-controller="Instruments" asp-action="Index">Instruments</a></li>
+                    <li><a asp-area="" asp-controller="UserProfiles" asp-action="Edit">Edit Profile</a> </li>
                     }
                     </ul>
                 <partial name="_LoginPartial" />
@@ -50,7 +51,7 @@
         </div>
     </nav>
 
-    <partial name="_CookieConsentPartial" />
+    
 
     <div class="container body-content">
         @RenderBody()

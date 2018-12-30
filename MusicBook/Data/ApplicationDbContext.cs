@@ -21,7 +21,20 @@ namespace MusicBook.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<Thread> Threads { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
 
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<PlayerInstrument>().ToTable("PlayerInstrument");
+
+            modelBuilder.Entity<PlayerInstrument>()
+                    .HasKey(p => new
+                    {
+                        p.ApplicationUserId,
+                        p.InstrumentId
+                    });
+        }
     }
 }

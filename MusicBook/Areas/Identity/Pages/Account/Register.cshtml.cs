@@ -77,6 +77,10 @@ namespace MusicBook.Areas.Identity.Pages.Account
             public string Location { get; set; }
 
             [Required]
+            [Display(Name = "Instruments Played")]
+            public List<Instrument> AllInstruments { get; set; }
+
+            [Required]
             [Display(Name = "Experience")]
             public string Experience { get; set; }
 

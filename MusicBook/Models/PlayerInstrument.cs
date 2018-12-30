@@ -9,7 +9,7 @@ namespace MusicBook.Models
     public class PlayerInstrument
     {
     [Key]
-    public int PlayerInstrumentId { get; set; }
+    public int ApplicationUserId { get; set; }
     
     [Required]
     public int InstrumentId { get; set; }
