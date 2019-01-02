@@ -35,9 +35,9 @@
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Instruments"></label>
-                <input asp-for="Input.Instruments" class="form-control" />
-                <span asp-validation-for="Input.Instruments" class="text-danger"></span>
+                <label asp-for="Input.InstrumentIds" class="control-label"></label>
+                <select multiple asp-for="Input.InstrumentIds" class="form-control" asp-items="@Model.Input.InstrumentSelect"></select>
+                <span asp-validation-for="Input.InstrumentIds" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-default">Save</button>
         </form>

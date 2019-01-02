@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using MusicBook.Models;
+using MusicBook.Data;
 
 namespace MusicBook.Areas.Identity.Pages.Account
 {
@@ -22,17 +23,20 @@ namespace MusicBook.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         [BindProperty]
@@ -76,7 +80,12 @@ namespace MusicBook.Areas.Identity.Pages.Account
             [Display(Name = "Location")]
             public string Location { get; set; }
 
+            public List<Instrument> InstrumentList { get; set; }
 
+            [Display(Name = "Instrument You Play")]
+            public List<SelectListItem> InstrumentSelect { get; set; }
+
+            public List<int> InstrumentIds { get; set; }
 
             [Required]
             [Display(Name = "Experience")]
@@ -86,8 +95,21 @@ namespace MusicBook.Areas.Identity.Pages.Account
 
         public void OnGet(string returnUrl = null)
         {
+            Input = new InputModel();
+            var applicationDbContext = _context.Instruments;
+            List<Instrument> AllInstruments = _context.Instruments.ToList();
+            Input.InstrumentSelect = AllInstruments.Select(inst => new SelectListItem()
+            {
+                Text = inst.InstrumentName,
+                Value = inst.InstrumentId.ToString()
+            }).ToList();
+
             ReturnUrl = returnUrl;
         }
+
+     
+            
+        
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
@@ -95,11 +117,24 @@ namespace MusicBook.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, Location = Input.Location, Experience = Input.Experience, };
-                var profile = new UserProfile { Location = Input.Location, Experience = Input.Experience, };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
      
+
                 if (result.Succeeded)
                 {
+                foreach(int instrumentId in Input.InstrumentIds )
+                {
+                    PlayerInstrument newPlayerInstrument = new PlayerInstrument
+                    {
+                        InstrumentId = instrumentId,
+                        ApplicationUserId = user.Id
+                    };
+                        _context.Add(newPlayerInstrument);
+                    
+                }
+                    await _context.SaveChangesAsync();
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

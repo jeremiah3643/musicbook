@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MusicBook.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -50,6 +50,19 @@ namespace MusicBook.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Instruments",
+                columns: table => new
+                {
+                    InstrumentId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    InstrumentName = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Instruments", x => x.InstrumentId);
                 });
 
             migrationBuilder.CreateTable(
@@ -237,26 +250,29 @@ namespace MusicBook.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserProfiles",
+                name: "PlayerInstruments",
                 columns: table => new
                 {
-                    UserProfileId = table.Column<int>(nullable: false)
+                    PlayerInstrumentId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    applicationUserId = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Location = table.Column<string>(nullable: true),
-                    Experience = table.Column<string>(nullable: true)
+                    ApplicationUserId = table.Column<string>(nullable: false),
+                    InstrumentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserProfiles", x => x.UserProfileId);
+                    table.PrimaryKey("PK_PlayerInstruments", x => x.PlayerInstrumentId);
                     table.ForeignKey(
-                        name: "FK_UserProfiles_AspNetUsers_applicationUserId",
-                        column: x => x.applicationUserId,
+                        name: "FK_PlayerInstruments_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PlayerInstruments_Instruments_InstrumentId",
+                        column: x => x.InstrumentId,
+                        principalTable: "Instruments",
+                        principalColumn: "InstrumentId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -286,52 +302,6 @@ namespace MusicBook.Migrations
                         principalTable: "Posts",
                         principalColumn: "PostId",
                         onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Instruments",
-                columns: table => new
-                {
-                    InstrumentId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    InstrumentName = table.Column<string>(nullable: false),
-                    UserProfileId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Instruments", x => x.InstrumentId);
-                    table.ForeignKey(
-                        name: "FK_Instruments_UserProfiles_UserProfileId",
-                        column: x => x.UserProfileId,
-                        principalTable: "UserProfiles",
-                        principalColumn: "UserProfileId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PlayerInstrument",
-                columns: table => new
-                {
-                    ApplicationUserId = table.Column<int>(nullable: false),
-                    InstrumentId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlayerInstrument", x => new { x.ApplicationUserId, x.InstrumentId });
-                    table.UniqueConstraint("AK_PlayerInstrument_ApplicationUserId", x => x.ApplicationUserId);
-                    table.ForeignKey(
-                        name: "FK_PlayerInstrument_Instruments_InstrumentId",
-                        column: x => x.InstrumentId,
-                        principalTable: "Instruments",
-                        principalColumn: "InstrumentId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PlayerInstrument_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -374,11 +344,6 @@ namespace MusicBook.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Instruments_UserProfileId",
-                table: "Instruments",
-                column: "UserProfileId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_MessageBoxes_RecipientId",
                 table: "MessageBoxes",
                 column: "RecipientId");
@@ -399,14 +364,14 @@ namespace MusicBook.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayerInstrument_InstrumentId",
-                table: "PlayerInstrument",
-                column: "InstrumentId");
+                name: "IX_PlayerInstruments_ApplicationUserId",
+                table: "PlayerInstruments",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayerInstrument_UserId",
-                table: "PlayerInstrument",
-                column: "UserId");
+                name: "IX_PlayerInstruments_InstrumentId",
+                table: "PlayerInstruments",
+                column: "InstrumentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_AuthorId",
@@ -422,11 +387,6 @@ namespace MusicBook.Migrations
                 name: "IX_Threads_PostId",
                 table: "Threads",
                 column: "PostId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserProfiles_applicationUserId",
-                table: "UserProfiles",
-                column: "applicationUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -453,7 +413,7 @@ namespace MusicBook.Migrations
                 name: "Messages");
 
             migrationBuilder.DropTable(
-                name: "PlayerInstrument");
+                name: "PlayerInstruments");
 
             migrationBuilder.DropTable(
                 name: "Threads");
@@ -466,9 +426,6 @@ namespace MusicBook.Migrations
 
             migrationBuilder.DropTable(
                 name: "Posts");
-
-            migrationBuilder.DropTable(
-                name: "UserProfiles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

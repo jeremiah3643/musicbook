@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using MusicBook.Data;
 using MusicBook.Models;
 
 namespace MusicBook.Areas.Identity.Pages.Account.Manage
@@ -17,15 +19,18 @@ namespace MusicBook.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
+            _context = context;
         }
 
         public string Username { get; set; }
@@ -50,8 +55,12 @@ namespace MusicBook.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
-            [Display(Name = "Played Instruments")]
-            public string Instruments { get; set; }
+            public List<Instrument> InstrumentList { get; set; }
+
+            [Display(Name = "Instrument You Play")]
+            public List<SelectListItem> InstrumentSelect { get; set; }
+
+            public List<int> InstrumentIds { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -62,6 +71,11 @@ namespace MusicBook.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
+           
+
+          
+
+
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
@@ -71,8 +85,15 @@ namespace MusicBook.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 Email = email,
-                PhoneNumber = phoneNumber
-            };
+                PhoneNumber = phoneNumber,
+        };
+
+            List<Instrument> AllInstruments = _context.Instruments.ToList();
+            Input.InstrumentSelect = AllInstruments.Select(inst => new SelectListItem()
+            {
+                Text = inst.InstrumentName,
+                Value = inst.InstrumentId.ToString()
+            }).ToList();
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
 

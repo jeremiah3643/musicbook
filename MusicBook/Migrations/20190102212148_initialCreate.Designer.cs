@@ -10,8 +10,8 @@ using MusicBook.Data;
 namespace MusicBook.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181230223354_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20190102212148_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -200,11 +200,7 @@ namespace MusicBook.Migrations
                     b.Property<string>("InstrumentName")
                         .IsRequired();
 
-                    b.Property<int?>("UserProfileId");
-
                     b.HasKey("InstrumentId");
-
-                    b.HasIndex("UserProfileId");
 
                     b.ToTable("Instruments");
                 });
@@ -261,22 +257,22 @@ namespace MusicBook.Migrations
 
             modelBuilder.Entity("MusicBook.Models.PlayerInstrument", b =>
                 {
-                    b.Property<int>("ApplicationUserId");
+                    b.Property<int>("PlayerInstrumentId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired();
 
                     b.Property<int>("InstrumentId");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
+                    b.HasKey("PlayerInstrumentId");
 
-                    b.HasKey("ApplicationUserId", "InstrumentId");
-
-                    b.HasAlternateKey("ApplicationUserId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("InstrumentId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("PlayerInstrument");
+                    b.ToTable("PlayerInstruments");
                 });
 
             modelBuilder.Entity("MusicBook.Models.Post", b =>
@@ -329,29 +325,6 @@ namespace MusicBook.Migrations
                     b.HasIndex("PostId");
 
                     b.ToTable("Threads");
-                });
-
-            modelBuilder.Entity("MusicBook.Models.UserProfile", b =>
-                {
-                    b.Property<int>("UserProfileId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Experience");
-
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
-
-                    b.Property<string>("Location");
-
-                    b.Property<string>("applicationUserId");
-
-                    b.HasKey("UserProfileId");
-
-                    b.HasIndex("applicationUserId");
-
-                    b.ToTable("UserProfiles");
                 });
 
             modelBuilder.Entity("MusicBook.Models.ApplicationUser", b =>
@@ -420,13 +393,6 @@ namespace MusicBook.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("MusicBook.Models.Instrument", b =>
-                {
-                    b.HasOne("MusicBook.Models.UserProfile")
-                        .WithMany("PlayedInstruments")
-                        .HasForeignKey("UserProfileId");
-                });
-
             modelBuilder.Entity("MusicBook.Models.Message", b =>
                 {
                     b.HasOne("MusicBook.Models.Message", "ParentMessage")
@@ -454,14 +420,14 @@ namespace MusicBook.Migrations
 
             modelBuilder.Entity("MusicBook.Models.PlayerInstrument", b =>
                 {
-                    b.HasOne("MusicBook.Models.Instrument", "Instrument")
-                        .WithMany()
-                        .HasForeignKey("InstrumentId")
+                    b.HasOne("MusicBook.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("playerInstruments")
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MusicBook.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("MusicBook.Models.Instrument", "Instrument")
+                        .WithMany("playerInstruments")
+                        .HasForeignKey("InstrumentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -484,13 +450,6 @@ namespace MusicBook.Migrations
                         .WithMany()
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("MusicBook.Models.UserProfile", b =>
-                {
-                    b.HasOne("MusicBook.Models.ApplicationUser", "applicationUser")
-                        .WithMany()
-                        .HasForeignKey("applicationUserId");
                 });
 #pragma warning restore 612, 618
         }

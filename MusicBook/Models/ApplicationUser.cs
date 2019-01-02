@@ -21,6 +21,8 @@ namespace MusicBook.Models
         public string Location { get; set; }
         [Required]
         public string Experience { get; set; }
+
+        public List<PlayerInstrument> playerInstruments { get; set; }
     }
 }
 
