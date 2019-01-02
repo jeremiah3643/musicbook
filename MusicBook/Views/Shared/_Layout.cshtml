@@ -41,17 +41,18 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     <li><a asp-area="" asp-controller="Instruments" asp-action="Index">Instruments</a></li>
-                    @if (SignInManager.IsSignedIn(User)){
-                    <li><a asp-area="" asp-controller="Instruments" asp-action="Index">Instruments</a></li>
-                    <li><a asp-area="" asp-controller="UserProfiles" asp-action="Edit">Edit Profile</a> </li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li><a asp-area="" asp-controller="Instruments" asp-action="Index">Instruments</a></li>
+                        <li><a asp-area="" asp-controller="UserProfiles" asp-action="Edit">Edit Profile</a> </li>
                     }
-                    </ul>
+                </ul>
                 <partial name="_LoginPartial" />
             </div>
         </div>
     </nav>
 
-    
+
 
     <div class="container body-content">
         @RenderBody()
@@ -82,6 +83,7 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-    @RenderSection("Scripts", required: false)
+    @RenderSection("scripts", required: false)
+
 </body>
 </html>

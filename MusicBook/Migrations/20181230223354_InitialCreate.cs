@@ -176,7 +176,7 @@ namespace MusicBook.Migrations
                         column: x => x.RecipientId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MessageBoxes_AspNetUsers_SenderId",
                         column: x => x.SenderId,
@@ -242,7 +242,7 @@ namespace MusicBook.Migrations
                 {
                     UserProfileId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    applicationUserIdId = table.Column<string>(nullable: true),
+                    applicationUserId = table.Column<string>(nullable: true),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     Location = table.Column<string>(nullable: true),
@@ -252,8 +252,8 @@ namespace MusicBook.Migrations
                 {
                     table.PrimaryKey("PK_UserProfiles", x => x.UserProfileId);
                     table.ForeignKey(
-                        name: "FK_UserProfiles_AspNetUsers_applicationUserIdId",
-                        column: x => x.applicationUserIdId,
+                        name: "FK_UserProfiles_AspNetUsers_applicationUserId",
+                        column: x => x.applicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -279,7 +279,7 @@ namespace MusicBook.Migrations
                         column: x => x.AuthorId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Threads_Posts_PostId",
                         column: x => x.PostId,
@@ -424,9 +424,9 @@ namespace MusicBook.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserProfiles_applicationUserIdId",
+                name: "IX_UserProfiles_applicationUserId",
                 table: "UserProfiles",
-                column: "applicationUserIdId");
+                column: "applicationUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

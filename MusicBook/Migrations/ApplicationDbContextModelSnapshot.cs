@@ -343,11 +343,11 @@ namespace MusicBook.Migrations
 
                     b.Property<string>("Location");
 
-                    b.Property<string>("applicationUserIdId");
+                    b.Property<string>("applicationUserId");
 
                     b.HasKey("UserProfileId");
 
-                    b.HasIndex("applicationUserIdId");
+                    b.HasIndex("applicationUserId");
 
                     b.ToTable("UserProfiles");
                 });
@@ -486,9 +486,9 @@ namespace MusicBook.Migrations
 
             modelBuilder.Entity("MusicBook.Models.UserProfile", b =>
                 {
-                    b.HasOne("MusicBook.Models.ApplicationUser", "applicationUserId")
+                    b.HasOne("MusicBook.Models.ApplicationUser", "applicationUser")
                         .WithMany()
-                        .HasForeignKey("applicationUserIdId");
+                        .HasForeignKey("applicationUserId");
                 });
 #pragma warning restore 612, 618
         }

@@ -76,9 +76,7 @@ namespace MusicBook.Areas.Identity.Pages.Account
             [Display(Name = "Location")]
             public string Location { get; set; }
 
-            [Required]
-            [Display(Name = "Instruments Played")]
-            public List<Instrument> AllInstruments { get; set; }
+
 
             [Required]
             [Display(Name = "Experience")]
@@ -97,7 +95,9 @@ namespace MusicBook.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = Input.UserName, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName, Location = Input.Location, Experience = Input.Experience, };
+                var profile = new UserProfile { Location = Input.Location, Experience = Input.Experience, };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+     
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

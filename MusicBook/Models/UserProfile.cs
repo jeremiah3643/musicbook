@@ -13,7 +13,7 @@ namespace MusicBook.Models
         public int UserProfileId { get; set; }
 
       
-        public ApplicationUser applicationUserId { get; set; }
+        public ApplicationUser applicationUser { get; set; }
 
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
