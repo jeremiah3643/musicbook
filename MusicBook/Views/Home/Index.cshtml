@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MusicBook.Models.ApplicationUser>
+﻿@model MusicBook.Models.ViewModels.HomeViewModel
 
 @using Microsoft.AspNetCore.Identity
 @using MusicBook.Models
@@ -15,32 +15,31 @@
 @if (SignInManager.IsSignedIn(User))
 {
     var user = await UserManager.GetUserAsync(User);
-    foreach (var item in Model)
-    {
-        if (user.Id == item.Id)
-        {
-            <div>
-                <div>
-                    <p>Hello!</p>
-                </div>
-                <p>@Html.DisplayFor(model => item.Experience)</p>
-                <div>
+<div>
+    <div>
+        <p>Hello!</p>
+    </div>
+    <p>@Html.DisplayFor(model => model.CurrentUser.Experience)</p>
+    <div>
+    </div>
+    <p>@Html.DisplayFor(model => model.CurrentUser.Location)</p>
+    <div>
+    </div>
+ 
+     
+    @foreach (var item in Model.UserInstruments)
+    {          
+        <p>
 
-                </div>
-            </div>
+                @Html.DisplayFor(modelItem => item.InstrumentName)
+        </p>
+            
+
+    
         }
-
-    }
-
-
-
-
-
-
+ 
+ </div>
 }
-
-
-
 
 else
 {
