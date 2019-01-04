@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MusicBook.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -255,23 +255,23 @@ namespace MusicBook.Migrations
                 {
                     PlayerInstrumentId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    InstrumentId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: false)
+                    ApplicationUserId = table.Column<string>(nullable: false),
+                    InstrumentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PlayerInstruments", x => x.PlayerInstrumentId);
                     table.ForeignKey(
+                        name: "FK_PlayerInstruments_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_PlayerInstruments_Instruments_InstrumentId",
                         column: x => x.InstrumentId,
                         principalTable: "Instruments",
                         principalColumn: "InstrumentId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PlayerInstruments_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -364,14 +364,14 @@ namespace MusicBook.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PlayerInstruments_ApplicationUserId",
+                table: "PlayerInstruments",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PlayerInstruments_InstrumentId",
                 table: "PlayerInstruments",
                 column: "InstrumentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlayerInstruments_UserId",
-                table: "PlayerInstruments",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_AuthorId",

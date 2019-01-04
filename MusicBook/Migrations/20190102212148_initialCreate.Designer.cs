@@ -10,8 +10,8 @@ using MusicBook.Data;
 namespace MusicBook.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181212211906_Initial")]
-    partial class Initial
+    [Migration("20190102212148_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -261,16 +261,16 @@ namespace MusicBook.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("InstrumentId");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("ApplicationUserId")
                         .IsRequired();
+
+                    b.Property<int>("InstrumentId");
 
                     b.HasKey("PlayerInstrumentId");
 
-                    b.HasIndex("InstrumentId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("InstrumentId");
 
                     b.ToTable("PlayerInstruments");
                 });
@@ -420,14 +420,14 @@ namespace MusicBook.Migrations
 
             modelBuilder.Entity("MusicBook.Models.PlayerInstrument", b =>
                 {
-                    b.HasOne("MusicBook.Models.Instrument", "Instrument")
-                        .WithMany()
-                        .HasForeignKey("InstrumentId")
+                    b.HasOne("MusicBook.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("playerInstruments")
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MusicBook.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("MusicBook.Models.Instrument", "Instrument")
+                        .WithMany("playerInstruments")
+                        .HasForeignKey("InstrumentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

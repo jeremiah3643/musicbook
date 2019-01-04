@@ -22,6 +22,5 @@ namespace MusicBook.Data
         public DbSet<Thread> Threads { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
-
     }
 }
