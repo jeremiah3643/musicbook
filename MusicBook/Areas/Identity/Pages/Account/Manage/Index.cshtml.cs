@@ -57,6 +57,10 @@ namespace MusicBook.Areas.Identity.Pages.Account.Manage
 
             public List<Instrument> InstrumentList { get; set; }
 
+            public string Experience { get; set; }
+
+            public string Location { get; set; }
+
             [Display(Name = "Instrument You Play")]
             public List<SelectListItem> InstrumentSelect { get; set; }
 
@@ -71,11 +75,6 @@ namespace MusicBook.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-           
-
-          
-
-
             var userName = await _userManager.GetUserNameAsync(user);
             var email = await _userManager.GetEmailAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
@@ -86,8 +85,12 @@ namespace MusicBook.Areas.Identity.Pages.Account.Manage
             {
                 Email = email,
                 PhoneNumber = phoneNumber,
-        };
 
+        };
+            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+
+
+            var applicationDbContext = _context.Instruments;
             List<Instrument> AllInstruments = _context.Instruments.ToList();
             Input.InstrumentSelect = AllInstruments.Select(inst => new SelectListItem()
             {
@@ -95,7 +98,11 @@ namespace MusicBook.Areas.Identity.Pages.Account.Manage
                 Value = inst.InstrumentId.ToString()
             }).ToList();
 
-            IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
+            var UserInstrumentIds = _context.PlayerInstruments.Where(inst => inst.ApplicationUserId == user.Id).ToList();
+            Input.InstrumentIds = UserInstrumentIds.Select(inst => inst.InstrumentId).ToList();
+
+          
+
 
             return Page();
         }
@@ -134,6 +141,26 @@ namespace MusicBook.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
+
+            var oldPlayerInstrument = _context.PlayerInstruments.Where(inst => inst.ApplicationUserId == user.Id).ToList();
+            foreach ( PlayerInstrument instrument in oldPlayerInstrument)
+            {
+                _context.Remove(instrument);
+            }
+
+
+            foreach (int instrumentId in Input.InstrumentIds)
+            {
+                PlayerInstrument newPlayerInstrument = new PlayerInstrument
+                {
+                    InstrumentId = instrumentId,
+                    ApplicationUserId = user.Id
+                };
+                _context.Add(newPlayerInstrument);
+
+            }
+
+            await _context.SaveChangesAsync();
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
