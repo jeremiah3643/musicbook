@@ -43,7 +43,9 @@
                     <li><a asp-area="" asp-controller="Instruments" asp-action="Index">Instruments</a></li>
                     @if (SignInManager.IsSignedIn(User))
                     {
-                        <li><a asp-area="" asp-controller="Instruments" asp-action="Index">Instruments</a></li>
+                        <li>
+                        <form id="searchbar" asp-controller="Profiles" asp-action="search" method="get"><input name="inputField" placeholder="Search for Musicians" /></form>
+                        </li>
                     }
                 </ul>
                 <partial name="_LoginPartial" />
