@@ -77,9 +77,6 @@ namespace MusicBook.Controllers
             {
                 return NotFound();
             }
-            /* var profile = await _context.ApplicationUsers
-                 .FirstOrDefaultAsync(p => p.Id == id.ToString());
-                 */
             var user = await _context.ApplicationUsers.FirstOrDefaultAsync(p => p.Id == id.ToString());
             List<Instrument> AllInstruments = _context.Instruments.ToList();
             var UserInstruments = _context.PlayerInstruments.Include(pi => pi.Instrument).Where(inst => inst.ApplicationUserId == id).ToList();
