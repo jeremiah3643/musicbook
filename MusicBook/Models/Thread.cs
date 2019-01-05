@@ -13,15 +13,15 @@ namespace MusicBook.Models
         [Required]
         public int PostId { get; set; }
         [Required]
-        public Post Post { get; set; }
-        [Required]
         public string UserId { get; set; }
         [Required]
-        public ApplicationUser Author { get; set; }
+        public string AuthorId { get; set; }
         [Required]
         public string ThreadMessage { get; set; }
         [Required]
         public DateTime ThreadDate { get; set; }
+        [Required]
+        public List<Post> Post { get; set; }
 
         public ApplicationUser ApplicationUser { get; set; }
 

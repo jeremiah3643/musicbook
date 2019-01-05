@@ -14,6 +14,6 @@ namespace MusicBook.Models
     [Display(Name = "Type Of Instrument")]
     public string InstrumentName { get; set; }
 
-        public List<PlayerInstrument> playerInstruments { get; set; }
+    public List<PlayerInstrument> playerInstruments { get; set; }
     }
 }

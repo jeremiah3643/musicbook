@@ -24,5 +24,8 @@ namespace MusicBook.Models
     public string Subject { get; set; }
     [Required]
     public string MessageBody { get; set; }
+
+    public List<MessageBox> messageBoxes { get; set; }
+
     }
 }

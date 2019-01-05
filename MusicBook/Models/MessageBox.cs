@@ -13,16 +13,13 @@ namespace MusicBook.Models
 
     [Required]
     public string RecipientId { get; set; }
-    [Required]
-    public ApplicationUser Recipient { get; set; }
-
 
     [Required]
     public string SenderId { get; set; }
-    [Required]
-    public ApplicationUser Sender { get; set; }
 
     [Required]
     public int MessageId { get; set; }
+
+    public ApplicationUser Application { get; set; }
     }
 }
