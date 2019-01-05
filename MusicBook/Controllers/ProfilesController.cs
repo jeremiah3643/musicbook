@@ -16,6 +16,8 @@ namespace MusicBook.Controllers
 {
     public class ProfilesController : Controller
     {
+        
+
 
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -47,16 +49,23 @@ namespace MusicBook.Controllers
 
         public async Task<IActionResult> Search(string inputField)
         {
-            var checkUser = _context.ApplicationUsers.Where(au => au.UserName.Contains(inputField)).ToListAsync());
+            var user = await _userManager.GetUserAsync(User);
+            var checkUser = _context.ApplicationUsers.Where(au => au.UserName.Contains(inputField)).ToList();
             var playerInstrumentList = _context.PlayerInstruments.Include(pi => pi.Instrument).Include(au => au.ApplicationUser).Where(pi => pi.Instrument.InstrumentName.Contains(inputField)).ToList();
 
             List<ApplicationUser> finalResults = playerInstrumentList.Select(inst => inst.ApplicationUser).ToList();
+            List<ApplicationUser> readout = new List<ApplicationUser>();
 
+            var allResults = finalResults.Union(checkUser);
 
-
-            return View(await _context.ApplicationUsers.Where(au => au.UserName.Contains(inputField)).ToListAsync());
-
-
+            foreach(ApplicationUser person in allResults)
+            {
+                if( person.Id != user.Id)
+                {
+                    readout.Add(person);
+                }
+            }
+            return View(readout.ToList());
         }
 
 
