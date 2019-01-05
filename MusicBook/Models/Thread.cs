@@ -22,5 +22,8 @@ namespace MusicBook.Models
         public string ThreadMessage { get; set; }
         [Required]
         public DateTime ThreadDate { get; set; }
+
+        public ApplicationUser ApplicationUser { get; set; }
+
     }
 }
