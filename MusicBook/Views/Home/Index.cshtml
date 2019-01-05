@@ -1,4 +1,6 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@model MusicBook.Models.ViewModels.HomeViewModel
+
+@using Microsoft.AspNetCore.Identity
 @using MusicBook.Models
 
 @inject SignInManager<ApplicationUser> SignInManager
@@ -12,33 +14,38 @@
 }
 @if (SignInManager.IsSignedIn(User))
 {
+    var user = await UserManager.GetUserAsync(User);
+<div>
     <div>
-
         <p>Hello!</p>
-
     </div>
+    <p>@Html.DisplayFor(model => model.CurrentUser.Experience)</p>
+    <div>
+    </div>
+    <p>@Html.DisplayFor(model => model.CurrentUser.Location)</p>
+    <div>
+    </div>
+ 
+     
+    @foreach (var item in Model.UserInstruments)
+    {          
+        <p>
 
+                @Html.DisplayFor(modelItem => item.InstrumentName)
+        </p>
+            
 
-
-
-
+    
+        }
+ 
+ </div>
 }
-
-
-
 
 else
 {
     <div>
         <div class="col-md-3">
-            <h2>How to</h2>
-            <ul>
-                <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-                <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-                <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-                <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-                <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-            </ul>
+            <p>Please Register An Account or Log In</p>
         </div>
 
     </div>

@@ -1,0 +1,20 @@
+﻿@model MusicBook.Models.ApplicationUser
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Profile</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayFor(model => model.UserName)
+        </dt>
+       </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

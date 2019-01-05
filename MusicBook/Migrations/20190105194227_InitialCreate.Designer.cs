@@ -10,8 +10,8 @@ using MusicBook.Data;
 namespace MusicBook.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190102212148_initialCreate")]
-    partial class initialCreate
+    [Migration("20190105194227_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
