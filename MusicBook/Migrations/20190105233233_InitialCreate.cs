@@ -172,33 +172,6 @@ namespace MusicBook.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MessageBoxes",
-                columns: table => new
-                {
-                    MessageBoxId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RecipientId = table.Column<string>(nullable: false),
-                    SenderId = table.Column<string>(nullable: false),
-                    MessageId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MessageBoxes", x => x.MessageBoxId);
-                    table.ForeignKey(
-                        name: "FK_MessageBoxes_AspNetUsers_RecipientId",
-                        column: x => x.RecipientId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MessageBoxes_AspNetUsers_SenderId",
-                        column: x => x.SenderId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Messages",
                 columns: table => new
                 {
@@ -228,25 +201,27 @@ namespace MusicBook.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Posts",
+                name: "Threads",
                 columns: table => new
                 {
-                    PostId = table.Column<int>(nullable: false)
+                    ThreadId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PostAuthor = table.Column<string>(nullable: false),
+                    PostId = table.Column<int>(nullable: false),
+                    UserId = table.Column<string>(nullable: false),
                     AuthorId = table.Column<string>(nullable: false),
-                    PostTopic = table.Column<string>(nullable: false),
-                    PostDate = table.Column<DateTime>(nullable: false)
+                    ThreadMessage = table.Column<string>(nullable: false),
+                    ThreadDate = table.Column<DateTime>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Posts", x => x.PostId);
+                    table.PrimaryKey("PK_Threads", x => x.ThreadId);
                     table.ForeignKey(
-                        name: "FK_Posts_AspNetUsers_AuthorId",
-                        column: x => x.AuthorId,
+                        name: "FK_Threads_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,32 +251,61 @@ namespace MusicBook.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Threads",
+                name: "MessageBoxes",
                 columns: table => new
                 {
-                    ThreadId = table.Column<int>(nullable: false)
+                    MessageBoxId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PostId = table.Column<int>(nullable: false),
-                    UserId = table.Column<string>(nullable: false),
-                    AuthorId = table.Column<string>(nullable: false),
-                    ThreadMessage = table.Column<string>(nullable: false),
-                    ThreadDate = table.Column<DateTime>(nullable: false)
+                    RecipientId = table.Column<string>(nullable: false),
+                    SenderId = table.Column<string>(nullable: false),
+                    MessageId = table.Column<int>(nullable: false),
+                    ApplicationId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Threads", x => x.ThreadId);
+                    table.PrimaryKey("PK_MessageBoxes", x => x.MessageBoxId);
                     table.ForeignKey(
-                        name: "FK_Threads_AspNetUsers_AuthorId",
-                        column: x => x.AuthorId,
+                        name: "FK_MessageBoxes_AspNetUsers_ApplicationId",
+                        column: x => x.ApplicationId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Threads_Posts_PostId",
-                        column: x => x.PostId,
-                        principalTable: "Posts",
-                        principalColumn: "PostId",
-                        onDelete: ReferentialAction.NoAction);
+                        name: "FK_MessageBoxes_Messages_MessageId",
+                        column: x => x.MessageId,
+                        principalTable: "Messages",
+                        principalColumn: "MessageId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    PostId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PostAuthor = table.Column<string>(nullable: false),
+                    AuthorId = table.Column<string>(nullable: false),
+                    PostTopic = table.Column<string>(nullable: false),
+                    PostDate = table.Column<DateTime>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true),
+                    ThreadId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.PostId);
+                    table.ForeignKey(
+                        name: "FK_Posts_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Posts_Threads_ThreadId",
+                        column: x => x.ThreadId,
+                        principalTable: "Threads",
+                        principalColumn: "ThreadId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -344,14 +348,14 @@ namespace MusicBook.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MessageBoxes_RecipientId",
+                name: "IX_MessageBoxes_ApplicationId",
                 table: "MessageBoxes",
-                column: "RecipientId");
+                column: "ApplicationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MessageBoxes_SenderId",
+                name: "IX_MessageBoxes_MessageId",
                 table: "MessageBoxes",
-                column: "SenderId");
+                column: "MessageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_ParentMessageMessageId",
@@ -374,19 +378,19 @@ namespace MusicBook.Migrations
                 column: "InstrumentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Posts_AuthorId",
+                name: "IX_Posts_ApplicationUserId",
                 table: "Posts",
-                column: "AuthorId");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Threads_AuthorId",
-                table: "Threads",
-                column: "AuthorId");
+                name: "IX_Posts_ThreadId",
+                table: "Posts",
+                column: "ThreadId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Threads_PostId",
+                name: "IX_Threads_ApplicationUserId",
                 table: "Threads",
-                column: "PostId");
+                column: "ApplicationUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -410,22 +414,22 @@ namespace MusicBook.Migrations
                 name: "MessageBoxes");
 
             migrationBuilder.DropTable(
-                name: "Messages");
-
-            migrationBuilder.DropTable(
                 name: "PlayerInstruments");
 
             migrationBuilder.DropTable(
-                name: "Threads");
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "Instruments");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                name: "Threads");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

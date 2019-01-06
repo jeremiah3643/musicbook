@@ -10,7 +10,7 @@ using MusicBook.Data;
 namespace MusicBook.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190105194227_InitialCreate")]
+    [Migration("20190105233233_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,6 +238,8 @@ namespace MusicBook.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationId");
+
                     b.Property<int>("MessageId");
 
                     b.Property<string>("RecipientId")
@@ -248,9 +250,9 @@ namespace MusicBook.Migrations
 
                     b.HasKey("MessageBoxId");
 
-                    b.HasIndex("RecipientId");
+                    b.HasIndex("ApplicationId");
 
-                    b.HasIndex("SenderId");
+                    b.HasIndex("MessageId");
 
                     b.ToTable("MessageBoxes");
                 });
@@ -281,6 +283,8 @@ namespace MusicBook.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<string>("AuthorId")
                         .IsRequired();
 
@@ -292,9 +296,13 @@ namespace MusicBook.Migrations
                     b.Property<string>("PostTopic")
                         .IsRequired();
 
+                    b.Property<int?>("ThreadId");
+
                     b.HasKey("PostId");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ThreadId");
 
                     b.ToTable("Posts");
                 });
@@ -304,6 +312,8 @@ namespace MusicBook.Migrations
                     b.Property<int>("ThreadId")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId");
 
                     b.Property<string>("AuthorId")
                         .IsRequired();
@@ -320,9 +330,7 @@ namespace MusicBook.Migrations
 
                     b.HasKey("ThreadId");
 
-                    b.HasIndex("AuthorId");
-
-                    b.HasIndex("PostId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Threads");
                 });
@@ -407,14 +415,13 @@ namespace MusicBook.Migrations
 
             modelBuilder.Entity("MusicBook.Models.MessageBox", b =>
                 {
-                    b.HasOne("MusicBook.Models.ApplicationUser", "Recipient")
+                    b.HasOne("MusicBook.Models.ApplicationUser", "Application")
                         .WithMany()
-                        .HasForeignKey("RecipientId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ApplicationId");
 
-                    b.HasOne("MusicBook.Models.ApplicationUser", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId")
+                    b.HasOne("MusicBook.Models.Message")
+                        .WithMany("messageBoxes")
+                        .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -433,23 +440,20 @@ namespace MusicBook.Migrations
 
             modelBuilder.Entity("MusicBook.Models.Post", b =>
                 {
-                    b.HasOne("MusicBook.Models.ApplicationUser", "Author")
+                    b.HasOne("MusicBook.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("MusicBook.Models.Thread")
+                        .WithMany("Post")
+                        .HasForeignKey("ThreadId");
                 });
 
             modelBuilder.Entity("MusicBook.Models.Thread", b =>
                 {
-                    b.HasOne("MusicBook.Models.ApplicationUser", "Author")
+                    b.HasOne("MusicBook.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("MusicBook.Models.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ApplicationUserId");
                 });
 #pragma warning restore 612, 618
         }
