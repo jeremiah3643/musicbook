@@ -18,8 +18,8 @@
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form  method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
                 <input asp-for="SendToId" class="form-control" type="hidden" />
                 <div class="form-group">
                     <label asp-for="MessageInput.Subject" class="control-label"></label>

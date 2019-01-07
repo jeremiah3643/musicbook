@@ -27,7 +27,8 @@ namespace MusicBook.Models
         [Required]
         [Display(Name = "Message")]
         public string MessageBody { get; set; }
-
+        public string MessageBoxId { get; set; }
+        public DateTime setDate { get; set; }
 
     public ApplicationUser ApplicationUser { get; set; }
     public List<MessageBox> messageBoxes { get; set; }

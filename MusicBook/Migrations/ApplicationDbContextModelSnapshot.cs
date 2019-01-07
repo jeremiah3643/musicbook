@@ -236,7 +236,7 @@ namespace MusicBook.Migrations
 
             modelBuilder.Entity("MusicBook.Models.MessageBox", b =>
                 {
-                    b.Property<int>("MessageBoxId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -248,7 +248,7 @@ namespace MusicBook.Migrations
                     b.Property<string>("SenderId")
                         .IsRequired();
 
-                    b.HasKey("MessageBoxId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 

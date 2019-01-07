@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Pages.Account.Internal;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -16,6 +17,7 @@ using static Microsoft.AspNetCore.Identity.UI.Pages.Account.Internal.ExternalLog
 
 namespace MusicBook.Views.Profiles
 {
+    [AllowAnonymous]
     public class SendMessageTestModel : PageModel
     {
         public SendMessageTestModel() { }

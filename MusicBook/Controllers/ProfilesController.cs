@@ -94,16 +94,22 @@ namespace MusicBook.Controllers
             var sendToId = id;
             var sentFromId = user.Id;
 
-            SendMessageTestModel MessageInfo = new SendMessageTestModel();
+            SendMessageViewModel MessageInfo = new SendMessageViewModel();
             MessageInfo.SendToId = sendToId;
             MessageInfo.SentFromId = sentFromId;
-
+            
             return View(MessageInfo);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SendMessage([Bind("MessageId,SendToId,SentFromId,Subject,MessageBody")] MessageViewModel message)
+        public async Task<IActionResult> SendMessage(SendMessageViewModel ViewModel)
         {
+            
+
+            var user = await _userManager.GetUserAsync(User);
+            var sendingMessage = new Message {SendToId = ViewModel.SendToId, ApplicationUserId = user.Id, Subject = ViewModel.Message.Subject, MessageBody = MessageInput.MessageBody, MessageDate = setDate.ToString(), };
+            var MessageBoxCreator = new MessageBox { ApplicationUserId = SentFromId, SenderId = SendToId, };
+
             if (ModelState.IsValid)
             {
                 _context.Add(message);

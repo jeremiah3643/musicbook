@@ -10,7 +10,7 @@ using MusicBook.Data;
 namespace MusicBook.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190107155210_InitialCreate")]
+    [Migration("20190107181017_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,7 +238,7 @@ namespace MusicBook.Migrations
 
             modelBuilder.Entity("MusicBook.Models.MessageBox", b =>
                 {
-                    b.Property<int>("MessageBoxId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -250,7 +250,7 @@ namespace MusicBook.Migrations
                     b.Property<string>("SenderId")
                         .IsRequired();
 
-                    b.HasKey("MessageBoxId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 

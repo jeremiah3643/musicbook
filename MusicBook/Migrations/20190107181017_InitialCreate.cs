@@ -255,7 +255,7 @@ namespace MusicBook.Migrations
                 name: "MessageBoxes",
                 columns: table => new
                 {
-                    MessageBoxId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ApplicationUserId = table.Column<string>(nullable: false),
                     SenderId = table.Column<string>(nullable: false),
@@ -263,7 +263,7 @@ namespace MusicBook.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MessageBoxes", x => x.MessageBoxId);
+                    table.PrimaryKey("PK_MessageBoxes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_MessageBoxes_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,

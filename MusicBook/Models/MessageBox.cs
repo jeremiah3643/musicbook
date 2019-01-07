@@ -9,7 +9,7 @@ namespace MusicBook.Models
     public class MessageBox
     {
     [Key]
-    public int MessageBoxId { get; set; }
+    public int Id { get; set; }
 
     [Required]
     public string ApplicationUserId { get; set; }
