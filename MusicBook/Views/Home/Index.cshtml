@@ -16,28 +16,29 @@
 {
     var user = await UserManager.GetUserAsync(User);
 <div>
-    <div>
-        <p>Hello!</p>
+    <div class="ProfileHead">
+        <h2 style="text-align:center; font-weight:bold; padding-bottom:10px;" class="ProfileHead" >Hello @Html.DisplayFor(model => model.CurrentUser.UserName)!</h2>
     </div>
-    <p>@Html.DisplayFor(model => model.CurrentUser.Experience)</p>
+    <p style="text-align:center; padding-bottom:10px;">@Html.DisplayFor(model => model.CurrentUser.Experience)</p>
     <div>
     </div>
-    <p>@Html.DisplayFor(model => model.CurrentUser.Location)</p>
+    <p style="text-align:center; padding-bottom:10px;">@Html.DisplayFor(model => model.CurrentUser.Location)</p>
     <div>
     </div>
  
-     
-    @foreach (var item in Model.UserInstruments)
-    {          
-        <p>
+    <ul style="text-align:center;">
+        Instruments Played:
+        @foreach (var item in Model.UserInstruments)
+        {
+            <li style="text-align:center; list-style-type:none;">
 
                 @Html.DisplayFor(modelItem => item.InstrumentName)
-        </p>
-            
+            </li>
 
-    
+
+
         }
- 
+    </ul>
  </div>
 }
 

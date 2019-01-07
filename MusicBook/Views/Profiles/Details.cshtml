@@ -4,34 +4,34 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Html.DisplayFor(model => model.ExternalUser.UserName)'s Profile</h2>
 
 <div>
     <h4>Profile</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
+    <div class="dl-horizontal">
+        
             @Html.DisplayFor(model => model.ExternalUser.UserName)
-        </dt>
-    </dl>
-<p>@Html.DisplayFor(model => model.ExternalUser.Experience)</p>
-<div>
+     </div>
+    <p>@Html.DisplayFor(model => model.ExternalUser.Experience)</p>
+    <div>
+    </div>
+    <p>@Html.DisplayFor(model => model.ExternalUser.Location)</p>
+    <div>
+    </div>
+    @foreach (var item in Model.UserInstruments)
+    {
+        <p>
+
+            @Html.DisplayFor(modelItem => item.InstrumentName)
+        </p>
+    }
+        <p>
+            <a href="mailto:@Html.DisplayFor(model => model.ExternalUser.Email)"/>
+            @Html.DisplayFor(model => model.ExternalUser.Email)
+        </p>
 </div>
-<p>@Html.DisplayFor(model => model.ExternalUser.Location)</p>
-<div>
-</div>
-@foreach (var item in Model.UserInstruments)
-{
-    <p>
-
-        @Html.DisplayFor(modelItem => item.InstrumentName)
-    </p>
-
-
-
-}
-
- </div>
 <div>
     <a asp-action="Search">Back to Search</a>
 </div>
+
