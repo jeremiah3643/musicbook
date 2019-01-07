@@ -177,12 +177,12 @@ namespace MusicBook.Migrations
                 {
                     MessageId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ApplicationUserId = table.Column<string>(nullable: false),
                     SendToId = table.Column<string>(nullable: false),
-                    SentFromId = table.Column<string>(nullable: false),
+                    MessageDate = table.Column<string>(nullable: false),
                     ParentMessageMessageId = table.Column<int>(nullable: true),
                     Subject = table.Column<string>(nullable: true),
-                    MessageBody = table.Column<string>(nullable: false),
-                    ApplicationUserId = table.Column<string>(nullable: true)
+                    MessageBody = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -192,7 +192,7 @@ namespace MusicBook.Migrations
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Messages_Messages_ParentMessageMessageId",
                         column: x => x.ParentMessageMessageId,
@@ -257,26 +257,25 @@ namespace MusicBook.Migrations
                 {
                     MessageBoxId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    RecipientId = table.Column<string>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: false),
                     SenderId = table.Column<string>(nullable: false),
-                    MessageId = table.Column<int>(nullable: false),
-                    ApplicationId = table.Column<string>(nullable: true)
+                    MessageId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MessageBoxes", x => x.MessageBoxId);
                     table.ForeignKey(
-                        name: "FK_MessageBoxes_AspNetUsers_ApplicationId",
-                        column: x => x.ApplicationId,
+                        name: "FK_MessageBoxes_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MessageBoxes_Messages_MessageId",
                         column: x => x.MessageId,
                         principalTable: "Messages",
                         principalColumn: "MessageId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -349,9 +348,9 @@ namespace MusicBook.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MessageBoxes_ApplicationId",
+                name: "IX_MessageBoxes_ApplicationUserId",
                 table: "MessageBoxes",
-                column: "ApplicationId");
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MessageBoxes_MessageId",

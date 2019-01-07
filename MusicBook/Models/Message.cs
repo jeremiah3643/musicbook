@@ -12,17 +12,15 @@ namespace MusicBook.Models
     public int MessageId { get; set; }
     
     [Required]
-    public string MessageBoxId { get; set; }
+    public string ApplicationUserId { get; set; }
 
     [Required]
     public string SendToId { get; set; }
 
-    [Required]
-    public string SentFromId { get; set; }
-  
+        [Required]
+        public string MessageDate { get; set; }
 
-
-    public Message ParentMessage { get; set; }
+        public Message ParentMessage { get; set; }
 
         [Display(Name = "Subject")]
         public string Subject { get; set; }

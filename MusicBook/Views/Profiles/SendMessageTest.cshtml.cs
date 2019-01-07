@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using MusicBook.Data;
 using MusicBook.Models;
+using static Microsoft.AspNetCore.Identity.UI.Pages.Account.Internal.ExternalLoginModel;
 
 namespace MusicBook.Views.Profiles
 {
@@ -35,38 +36,45 @@ namespace MusicBook.Views.Profiles
         public string SendToId { get; set; }
         public string SentFromId { get; set; }
 
-        public SendMessageTestModel(MusicBook.Data.ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
-
+        
         [BindProperty]
-        public MessageInput messageInput { get; set; }
-        public class MessageInput
+        public MessageData MessageInput { get; set; }
+        public string ReturnUrl { get; set; }
+        public class MessageData
         {
             [Display(Name = "Subject")]
             public string Subject { get; set; }
-            [Required]
+
             [Display(Name = "Message")]
             public string MessageBody { get; set; }
         }
 
-        public async Task<IActionResult> OnPostAsync()
+
+
+        public void OnGet(string returnUrl = null)
         {
-           
+            MessageInput = new MessageData();
+
+
+
+            ReturnUrl = returnUrl;
+        }
+
+       
+
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-           var sendingMessage = new Message { SendToId = SendToId, SentFromId = SentFromId, Subject = messageInput.Subject, MessageBody = messageInput.MessageBody,};
-            SendToId = SendToId;
+            var setDate = DateTime.Now;
+           var sendingMessage = new Message { SendToId = SendToId, ApplicationUserId = SentFromId, Subject = MessageInput.Subject, MessageBody = MessageInput.MessageBody, MessageDate = setDate.ToString(),};
+            var MessageBoxCreator = new MessageBox { ApplicationUserId = SentFromId, SenderId = SendToId, };
 
-            _context.Messages.Add(sendingMessage);
+            _context.Add(sendingMessage);
+            _context.Add(MessageBoxCreator);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

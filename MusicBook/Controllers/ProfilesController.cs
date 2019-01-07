@@ -100,7 +100,7 @@ namespace MusicBook.Controllers
 
             return View(MessageInfo);
         }
-       /* [HttpPost]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SendMessage([Bind("MessageId,SendToId,SentFromId,Subject,MessageBody")] MessageViewModel message)
         {
@@ -112,6 +112,6 @@ namespace MusicBook.Controllers
             }
             return View(message);
         }
-        */
+        
     }
 }

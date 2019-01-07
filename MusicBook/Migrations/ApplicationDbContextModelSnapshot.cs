@@ -209,17 +209,18 @@ namespace MusicBook.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApplicationUserId");
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired();
 
                     b.Property<string>("MessageBody")
+                        .IsRequired();
+
+                    b.Property<string>("MessageDate")
                         .IsRequired();
 
                     b.Property<int?>("ParentMessageMessageId");
 
                     b.Property<string>("SendToId")
-                        .IsRequired();
-
-                    b.Property<string>("SentFromId")
                         .IsRequired();
 
                     b.Property<string>("Subject");
@@ -239,19 +240,17 @@ namespace MusicBook.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApplicationId");
-
-                    b.Property<int>("MessageId");
-
-                    b.Property<string>("RecipientId")
+                    b.Property<string>("ApplicationUserId")
                         .IsRequired();
+
+                    b.Property<int?>("MessageId");
 
                     b.Property<string>("SenderId")
                         .IsRequired();
 
                     b.HasKey("MessageBoxId");
 
-                    b.HasIndex("ApplicationId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("MessageId");
 
@@ -406,7 +405,8 @@ namespace MusicBook.Migrations
                 {
                     b.HasOne("MusicBook.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MusicBook.Models.Message", "ParentMessage")
                         .WithMany()
@@ -415,14 +415,14 @@ namespace MusicBook.Migrations
 
             modelBuilder.Entity("MusicBook.Models.MessageBox", b =>
                 {
-                    b.HasOne("MusicBook.Models.ApplicationUser", "Application")
+                    b.HasOne("MusicBook.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("ApplicationId");
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MusicBook.Models.Message")
                         .WithMany("messageBoxes")
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("MessageId");
                 });
 
             modelBuilder.Entity("MusicBook.Models.PlayerInstrument", b =>

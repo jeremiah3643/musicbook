@@ -12,15 +12,12 @@ namespace MusicBook.Models
     public int MessageBoxId { get; set; }
 
     [Required]
-    public string RecipientId { get; set; }
+    public string ApplicationUserId { get; set; }
 
     [Required]
     public string SenderId { get; set; }
 
-    [Required]
-    public int MessageId { get; set; }
-
-        public List<PlayerInstrument> playerInstruments { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+    
+    public ApplicationUser ApplicationUser { get; set; }
     }
 }
