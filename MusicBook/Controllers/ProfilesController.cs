@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using MusicBook.Data;
 using MusicBook.Models;
 using MusicBook.Models.ViewModels;
-
+using MusicBook.Views.Profiles;
 
 namespace MusicBook.Controllers
 {
@@ -87,5 +87,31 @@ namespace MusicBook.Controllers
             ExternalInfo.UserInstruments = userInstrumentList;
             return View(ExternalInfo);
         }
+        //Get data to create message
+        public async Task<IActionResult> SendMessageTest(string id)
+        {
+           var user = await _userManager.GetUserAsync(User);
+            var sendToId = id;
+            var sentFromId = user.Id;
+
+            SendMessageTestModel MessageInfo = new SendMessageTestModel();
+            MessageInfo.SendToId = sendToId;
+            MessageInfo.SentFromId = sentFromId;
+
+            return View(MessageInfo);
+        }
+       /* [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SendMessage([Bind("MessageId,SendToId,SentFromId,Subject,MessageBody")] MessageViewModel message)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(message);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(message);
+        }
+        */
     }
 }

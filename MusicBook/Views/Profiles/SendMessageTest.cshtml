@@ -1,0 +1,43 @@
+﻿
+@model MusicBook.Views.Profiles.SendMessageTestModel
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>SendMessageTest</title>
+</head>
+<body>
+
+<h4>Message</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="SendToId" class="form-control" type="hidden" />
+            <div class="form-group">
+                <label asp-for="messageInput.Subject" class="control-label"></label>
+                <input asp-for="messageInput.Subject" class="form-control" />
+                <span asp-validation-for="messageInput.Subject" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="messageInput.MessageBody" class="control-label"></label>
+                <input asp-for="messageInput.MessageBody" class="form-control" />
+                <span asp-validation-for="messageInput.MessageBody" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+            </div>
+                <button type="submit" class="btn btn-default">Send</button>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Details" asp-route-id="@(Model.SendToId)">Back to Details</a>
+</div>
+
+</body>
+</html>

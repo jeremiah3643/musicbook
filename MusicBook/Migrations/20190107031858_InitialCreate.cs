@@ -177,27 +177,28 @@ namespace MusicBook.Migrations
                 {
                     MessageId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: false),
-                    ParentId = table.Column<int>(nullable: false),
+                    SendToId = table.Column<string>(nullable: false),
+                    SentFromId = table.Column<string>(nullable: false),
                     ParentMessageMessageId = table.Column<int>(nullable: true),
                     Subject = table.Column<string>(nullable: true),
-                    MessageBody = table.Column<string>(nullable: false)
+                    MessageBody = table.Column<string>(nullable: false),
+                    ApplicationUserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Messages", x => x.MessageId);
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Messages_Messages_ParentMessageMessageId",
                         column: x => x.ParentMessageMessageId,
                         principalTable: "Messages",
                         principalColumn: "MessageId",
                         onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Messages_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -358,14 +359,14 @@ namespace MusicBook.Migrations
                 column: "MessageId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_ApplicationUserId",
+                table: "Messages",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Messages_ParentMessageMessageId",
                 table: "Messages",
                 column: "ParentMessageMessageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Messages_UserId",
-                table: "Messages",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlayerInstruments_ApplicationUserId",

@@ -10,21 +10,28 @@ namespace MusicBook.Models
     {
     [Key]
     public int MessageId { get; set; }
+    
+    [Required]
+    public string MessageBoxId { get; set; }
 
     [Required]
-    public string UserId { get; set; }
+    public string SendToId { get; set; }
+
     [Required]
-    public ApplicationUser User { get; set; }
+    public string SentFromId { get; set; }
+  
 
 
-    public int ParentId { get; set; }
     public Message ParentMessage { get; set; }
 
+        [Display(Name = "Subject")]
+        public string Subject { get; set; }
+        [Required]
+        [Display(Name = "Message")]
+        public string MessageBody { get; set; }
 
-    public string Subject { get; set; }
-    [Required]
-    public string MessageBody { get; set; }
 
+    public ApplicationUser ApplicationUser { get; set; }
     public List<MessageBox> messageBoxes { get; set; }
 
     }

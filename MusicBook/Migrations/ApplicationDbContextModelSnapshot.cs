@@ -209,23 +209,26 @@ namespace MusicBook.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserId");
+
                     b.Property<string>("MessageBody")
                         .IsRequired();
 
-                    b.Property<int>("ParentId");
-
                     b.Property<int?>("ParentMessageMessageId");
+
+                    b.Property<string>("SendToId")
+                        .IsRequired();
+
+                    b.Property<string>("SentFromId")
+                        .IsRequired();
 
                     b.Property<string>("Subject");
 
-                    b.Property<string>("UserId")
-                        .IsRequired();
-
                     b.HasKey("MessageId");
 
-                    b.HasIndex("ParentMessageMessageId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("ParentMessageMessageId");
 
                     b.ToTable("Messages");
                 });
@@ -401,14 +404,13 @@ namespace MusicBook.Migrations
 
             modelBuilder.Entity("MusicBook.Models.Message", b =>
                 {
+                    b.HasOne("MusicBook.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("MusicBook.Models.Message", "ParentMessage")
                         .WithMany()
                         .HasForeignKey("ParentMessageMessageId");
-
-                    b.HasOne("MusicBook.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MusicBook.Models.MessageBox", b =>

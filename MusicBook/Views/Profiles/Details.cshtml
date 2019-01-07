@@ -14,24 +14,25 @@
             @Html.DisplayFor(model => model.ExternalUser.UserName)
         </dt>
     </dl>
-<p>@Html.DisplayFor(model => model.ExternalUser.Experience)</p>
-<div>
+    <p>@Html.DisplayFor(model => model.ExternalUser.Experience)</p>
+    <div>
+    </div>
+    <p>@Html.DisplayFor(model => model.ExternalUser.Location)</p>
+    <div>
+    </div>
+    @foreach (var item in Model.UserInstruments)
+    {
+        <p>
+
+            @Html.DisplayFor(modelItem => item.InstrumentName)
+        </p>
+
+    }
+    <div>
+    
+    </div>
+    <a asp-action="SendMessageTest" asp-route-id="@(Model.ExternalUser.Id)">Send Message</a> |
 </div>
-<p>@Html.DisplayFor(model => model.ExternalUser.Location)</p>
-<div>
-</div>
-@foreach (var item in Model.UserInstruments)
-{
-    <p>
-
-        @Html.DisplayFor(modelItem => item.InstrumentName)
-    </p>
-
-
-
-}
-
- </div>
 <div>
     <a asp-action="Search">Back to Search</a>
 </div>

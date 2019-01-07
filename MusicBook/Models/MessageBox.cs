@@ -20,6 +20,7 @@ namespace MusicBook.Models
     [Required]
     public int MessageId { get; set; }
 
-    public ApplicationUser Application { get; set; }
+        public List<PlayerInstrument> playerInstruments { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }
