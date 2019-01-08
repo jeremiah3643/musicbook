@@ -4,34 +4,47 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>@Html.DisplayFor(model => model.ExternalUser.UserName)'s Profile</h2>
+<h2 style="color:#EAC67a; text-align:center">@Html.DisplayFor(model => model.ExternalUser.UserName)'s Profile</h2>
 
-<div>
-    <h4>Profile</h4>
-    <hr />
-    <div class="dl-horizontal">
-        
-            @Html.DisplayFor(model => model.ExternalUser.UserName)
-     </div>
-    <p>@Html.DisplayFor(model => model.ExternalUser.Experience)</p>
-    <div>
-    </div>
-    <p>@Html.DisplayFor(model => model.ExternalUser.Location)</p>
-    <div>
-    </div>
-    @foreach (var item in Model.UserInstruments)
-    {
-        <p>
 
-            @Html.DisplayFor(modelItem => item.InstrumentName)
-        </p>
-    }
-        <p>
-            <a href="mailto:@Html.DisplayFor(model => model.ExternalUser.Email)"/>
+
+<div style="color:#EAC67a; border:double; text-align:center; background-color:#18121e" class="container-fluid">
+    <div class="row">
+        <div style="color:#EAC67a," class="col-lg-1, ProfileHead, textColor">
+
+        </div>
+
+
+
+        <div class="col-lg-3">
+            <h3 style="color:#EAC67a;text-align:center">Experience:</h3>
+            <p style="text-align:center;color:#EAC67a;font-size:20px; padding-bottom:10px;">@Html.DisplayFor(model => model.ExternalUser.Experience)</p>
+        </div>
+        <div class="col-lg-3">
+            <h3 style="text-align:center">Location:</h3>
+            <p style="text-align:center; padding-bottom:10px; font-size:20px;">@Html.DisplayFor(model => model.ExternalUser.Location)</p>
+        </div>
+        <div class="col-lg-3">
+            <h3 style="text-align:center">Instruments Played:</h3>
+            <ul style="text-align:center;">
+
+                @foreach (var item in Model.UserInstruments)
+                {
+                    <li style="text-align:center; font-size:20px; list-style-type:none;">
+
+                        @Html.DisplayFor(modelItem => item.InstrumentName)
+                    </li>
+                }
+            </ul>
+        </div>
+        <div class="col-lg-3">
+            <h3 style="text-align:center">Email:</h3>
+            <a style="color:#EAC67a; font-size:20px;" href="mailto:@Html.DisplayFor(model => model.ExternalUser.Email)" />
             @Html.DisplayFor(model => model.ExternalUser.Email)
-        </p>
-</div>
-<div>
-    <a asp-action="Search">Back to Search</a>
-</div>
+        </div>
 
+    </div>
+    <div style="color:#EAC67a">
+        <a style="color:#EAC67a" asp-action="Search">Back to Search </a>
+    </div>
+</div>
