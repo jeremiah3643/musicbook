@@ -3,31 +3,30 @@
         ViewData["Title"] = "Search";
     }
 
-    <h2>View</h2>
+    <h2>Search Results</h2>
+<hr />
+<div class="container-fluid">
+
+
 
     <div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.UserName)
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UserName)
-                        </td>
-                        <td>
-                            <a asp-action="Details" asp-route-id="@item.Id">View Profile</a> |
-                        </td>
-                    </tr>
-                }
-            </tbody>
+        @foreach (var item in Model)
+        {
+            <div class="col-lg-2">
 
+            <div class="card " style="width: 18rem;">
+                <div class="card-body">
+                    <div class="row" style="background-color:azure;margin:auto ">
+                        <div class="card-title text-center" style="font-size:24px; padding-bottom:10px">@Html.DisplayFor(modelItem => item.UserName)</div>
+                        <div class="card-body text-center">
 
+                            <a style="align-self:center" class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">View Profile</a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            </div>
+        }
+        </div>
     </div>

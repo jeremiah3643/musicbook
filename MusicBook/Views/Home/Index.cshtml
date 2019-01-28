@@ -15,30 +15,37 @@
 @if (SignInManager.IsSignedIn(User))
 {
     var user = await UserManager.GetUserAsync(User);
-<div>
-    <div>
-        <p>Hello!</p>
-    </div>
-    <p>@Html.DisplayFor(model => model.CurrentUser.Experience)</p>
-    <div>
-    </div>
-    <p>@Html.DisplayFor(model => model.CurrentUser.Location)</p>
-    <div>
-    </div>
- 
-     
-    @foreach (var item in Model.UserInstruments)
-    {          
-        <p>
-
-                @Html.DisplayFor(modelItem => item.InstrumentName)
-        </p>
+    <h2 style="text-align:center; font-weight:bold; padding-bottom:20px;" class="ProfileHead, textColor">Hello @Html.DisplayFor(model => model.CurrentUser.UserName)!</h2>
+    <div style="color:#EAC67a; border:double; text-align:center; background-color:#18121e" class="container-fluid">
+        <div class="row text-center">
             
+           
+           
 
-    
-        }
+                <div class="col-lg-3">
+                    <h3 style="color:#EAC67a;text-align:center">Experience:</h3>
+                    <p style="text-align:center;color:#EAC67a;font-size:20px; padding-bottom:10px;">@Html.DisplayFor(model => model.CurrentUser.Experience)</p>
+                </div>
+                <div class="col-lg-3">
+                    <h3 style="text-align:center">Location:</h3>
+                    <p style="text-align:center; padding-bottom:10px; font-size:20px;">@Html.DisplayFor(model => model.CurrentUser.Location)</p>
+                </div>
+                <div class="col-lg-3">
+                    <h3 style="text-align:center">Instruments Played:</h3>
+                    <ul style="text-align:center;">
+                       
+                        @foreach (var item in Model.UserInstruments)
+                        {
+                            <li style="text-align:center; font-size:20px; list-style-type:none;">
+
+                                @Html.DisplayFor(modelItem => item.InstrumentName)
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
  
- </div>
 }
 
 else
